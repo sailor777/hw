@@ -16,18 +16,17 @@ str_tmp_list = str_tmp_list.replace('.',',')
 str_tmp_list = str_tmp_list.replace('\'','')
 str_tmp_list = str_tmp_list.replace('[','')
 str_tmp_list = str_tmp_list.replace(']','')
-str_tmp_list = str_tmp_list.replace(' ','')
+#str_tmp_list = str_tmp_list.replace(' ','')
 str_tmp_list += ','
 
 start_list = list(str_tmp_list)
 
 for i in start_list:
-    #print(i)
     if i != ',':
         t += i
     else:
         try: flat_list.append(int(t))
-        except (ValueError): flat_list.append(t)
+        except (ValueError): flat_list.append(t.lstrip())
         t = ''
 
 print("Flat list is: %s" % flat_list)
