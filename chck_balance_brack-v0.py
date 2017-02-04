@@ -1,4 +1,4 @@
-
+#!/usr/bin/env python3.6
 # define type of brackets
 br='()'
 sq_br='[]'

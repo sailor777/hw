@@ -1,4 +1,3 @@
-#!/usr/bin/env python3.6
 
 # define
 #start_list = [1, [2, 3], ';', [[6, 7, [5], [[[6, 'a']]]]]]

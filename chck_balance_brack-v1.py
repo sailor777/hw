@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.6
+
 # define
 str_brackets = ''
 str_open = '([{'
