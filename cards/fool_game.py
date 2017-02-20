@@ -90,11 +90,14 @@ def trump_robot(cards_robot,trump):
     trump_robot = 'NO'
     for card in cards_robot:
         if card[0] == trump[0]:
-            trump_robot = card
-            if deck_cards_weighted.index(card) \
-                < deck_cards_weighted.index(trump_robot):
+            if trump_robot != 'NO':
+                if deck_cards_weighted.index(card) \
+                    < deck_cards_weighted.index(trump_robot):
+                    trump_robot = card
+                else:
+                    continue
+            else:
                 trump_robot = card
-                continue
     return trump_robot
 
 def trump_player(cards_player,trump):

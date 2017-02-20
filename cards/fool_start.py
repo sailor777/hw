@@ -24,17 +24,12 @@ while game_run == 'y':
     sleep(2)
     deck_cards_rand, cards_player, cards_robot, trump = shuffle_give_cards()
     see_cards(deck_cards_rand,cards_player,trump)
-    print("cards_player=%s" % cards_player)
-    print("cards_robot=%s" % cards_robot)
-    print("trump_robot()=%s" % trump_robot(cards_robot,trump))
-    print("trump_player()=%s" % trump_player(cards_player,trump))
-    trump_robot = trump_robot(cards_robot,trump)
-    print("trump_robot=%s" % trump_robot)
-    trump_player = trump_player(cards_player,trump)
-    step_player, step_robot = trumping(trump_player,trump_robot,trump)
+    trump_rob = trump_robot(cards_robot,trump)
+    trump_pla = trump_player(cards_player,trump)
+    step_player, step_robot = trumping(trump_pla,trump_rob,trump)
 
-    while len(deck_cards_rand) > 0 or len(cards_robot) > 0 \
-        or len(cards_player) > 0:
+    while len(deck_cards_rand) > 0 or len(cards_robot) >= 0 \
+        and len(cards_player) >= 0:
         if step_robot:
             cards_robot = robot_attack(cards_robot,trump)
             result, cards_player = player_defence(cards_player,trump)
@@ -70,12 +65,10 @@ while game_run == 'y':
         elif len(cards_robot) == 0 and len(cards_player) > 0:
             winner = 'Me'
 
-    print("%s is Winner" % winner)
-    sleep(10)
     if winner == 'Me':
         game_run = input("Я виграв! Граємо далі? 'y'/'n':")
     elif winner == 'You':
-        game_run = input("Ти виграв! Граємо далі? 'y'/'n':")
+        game_run = input("Ти виграв! Вітаю! Граємо далі? 'y'/'n':")
     elif winner == 'NO':
         game_run = input("Нічия!!! Граємо далі? 'y'/'n':")
 
