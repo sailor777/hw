@@ -75,7 +75,7 @@ while game_run == 'y':
     elif winner == 'NO':
         game_run = input("Нічия!!! Граємо далі? 'y'/'n':")
 
-    if game_run != 'y' and game_run != 'n':
+    if game_run.lower() != 'y' and game_run.lower() != 'n':
         game_run = 'y'
-    elif game_run == 'n':
+    elif game_run.lower() == 'n':
         print("Па-па, дякую за гру!")
