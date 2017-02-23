@@ -66,7 +66,7 @@ def see_cards(deck_cards_rand,cards_player,trump):
         print("\nКарти на столі: %s " % len(deck_cards_rand[1:]), end='')
         print("+ {0} {1} Козир".format(draw_map_suit[trump[0]],trump[1]))
     else:
-        print("\nкозир:{0} {1}".format(draw_map_suit[trump[0]],trump[1]))
+        print("\nкозир:{0}".format(draw_map_suit[trump[0]]))
     print("{0} Карти в грі {0}".format('='*10) )
     return 0
 
