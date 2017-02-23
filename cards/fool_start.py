@@ -30,12 +30,10 @@ while game_run == 'y':
     trump_pla = trump_player(cards_player,trump)
     step_player, step_robot = trumping(trump_pla,trump_rob,trump)
 
-    #while len(deck_cards_rand) > 0 or len(cards_robot) >= 0 \
-    #    and len(cards_player) >= 0:
     while len(cards_robot) > 0 and len(cards_player) > 0:
         if step_robot:
             cards_robot = robot_attack(cards_robot,trump)
-            print("cards_robot=%s"%cards_robot)
+            #print("cards_robot=%s"%cards_robot)
             result, cards_player = player_defence(cards_player,trump)
             if result == 'beat' or result == 'beat_trump':
                 step_robot = False
@@ -46,7 +44,7 @@ while game_run == 'y':
         else:
             cards_player = player_attack(cards_player,trump)
             result, cards_robot = robot_defence(cards_robot,trump)
-            print("cards_robot=%s"%cards_robot)
+            #print("cards_robot=%s"%cards_robot)
             if result == 'beat' or result == 'beat_trump':
                 step_robot = True
                 step_player = False
@@ -73,9 +71,11 @@ while game_run == 'y':
     if winner == 'Me':
         game_run = input("Я виграв! Граємо далі? 'y'/'n':")
     elif winner == 'You':
-        game_run = input("Ти виграв! Вітаю! Граємо далі? 'y'/'n':")
+        game_run = input("Вітаю %s!Ти виграв, граємо далі? 'y'/'n':" % player_name)
     elif winner == 'NO':
         game_run = input("Нічия!!! Граємо далі? 'y'/'n':")
 
     if game_run != 'y' and game_run != 'n':
         game_run = 'y'
+    elif game_run == 'n':
+        print("Па-па, дякую за гру!")
