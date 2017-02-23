@@ -3,7 +3,7 @@ from random import choice,randint,shuffle
 from os import system
 
 card_ranks = [ '6','7','8','9','T','J','Q','K','A' ]
-cards_rob_ranks = {'6':0,'7':0,'8':0,'9':0,'A':0,'J':0,'K':0,'Q':0,'T':0}
+cards_rob_ranks = {'6':0,'7':0,'8':0,'9':0,'T':0,'J':0,'Q':0,'K':0,'A':0}
 draw_map_suit = {'C': '\u2667', 'D': '\u2666', 'H': '\u2665', 'S': '\u2664'}
 deck_cards_weighted = [ 'C6','C7','C8','C9','CT','CJ','CQ','CK','CA',
                         'D6','D7','D8','D9','DT','DJ','DQ','DK','DA',

@@ -24,14 +24,18 @@ while game_run == 'y':
     sleep(2)
     deck_cards_rand, cards_player, cards_robot, trump = shuffle_give_cards()
     see_cards(deck_cards_rand,cards_player,trump)
+    print("cards_player=%s"%cards_player)
+    print("cards_robot=%s"%cards_robot)
     trump_rob = trump_robot(cards_robot,trump)
     trump_pla = trump_player(cards_player,trump)
     step_player, step_robot = trumping(trump_pla,trump_rob,trump)
 
-    while len(deck_cards_rand) > 0 or len(cards_robot) >= 0 \
-        and len(cards_player) >= 0:
+    #while len(deck_cards_rand) > 0 or len(cards_robot) >= 0 \
+    #    and len(cards_player) >= 0:
+    while len(cards_robot) > 0 and len(cards_player) > 0:
         if step_robot:
             cards_robot = robot_attack(cards_robot,trump)
+            print("cards_robot=%s"%cards_robot)
             result, cards_player = player_defence(cards_player,trump)
             if result == 'beat' or result == 'beat_trump':
                 step_robot = False
@@ -42,6 +46,7 @@ while game_run == 'y':
         else:
             cards_player = player_attack(cards_player,trump)
             result, cards_robot = robot_defence(cards_robot,trump)
+            print("cards_robot=%s"%cards_robot)
             if result == 'beat' or result == 'beat_trump':
                 step_robot = True
                 step_player = False
