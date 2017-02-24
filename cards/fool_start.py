@@ -22,10 +22,8 @@ while not player_name.isalpha():
 while game_run == 'y':
     print("Ок!Поїхали %s" % player_name)
     sleep(2)
-    deck_cards_rand, cards_player, cards_robot, trump = shuffle_give_cards()
-    see_cards(deck_cards_rand,cards_player,trump)
-    #print("cards_player=%s"%cards_player)
-    #print("cards_robot=%s"%cards_robot)
+    deck_cards, cards_player, cards_robot, trump = shuffle_give_cards()
+    see_cards(deck_cards,cards_player,trump)
     trump_rob = trump_robot(cards_robot,trump)
     trump_pla = trump_player(cards_player,trump)
     step_player, step_robot = trumping(trump_pla,trump_rob,trump)
@@ -33,7 +31,6 @@ while game_run == 'y':
     while len(cards_robot) > 0 and len(cards_player) > 0:
         if step_robot:
             cards_robot = robot_attack(cards_robot,trump)
-            #print("cards_robot=%s"%cards_robot)
             result, cards_player = player_defence(cards_player,trump)
             if result == 'beat' or result == 'beat_trump':
                 step_robot = False
@@ -44,7 +41,6 @@ while game_run == 'y':
         else:
             cards_player = player_attack(cards_player,trump)
             result, cards_robot = robot_defence(cards_robot,trump)
-            #print("cards_robot=%s"%cards_robot)
             if result == 'beat' or result == 'beat_trump':
                 step_robot = True
                 step_player = False
@@ -53,12 +49,16 @@ while game_run == 'y':
                 print("Холєра!Я забираю..")
                 sleep(2)
 
-        if len(deck_cards_rand) > 0:
-            cards_robot,deck_cards_rand = rob_take_card(cards_robot,deck_cards_rand)
-            cards_player,deck_cards_rand = pla_take_card(cards_player,deck_cards_rand)
+        if len(deck_cards) > 0:
+            if step_player:
+                cards_robot,deck_cards = rob_take_card(cards_robot,deck_cards)
+                cards_player,deck_cards = pla_take_card(cards_player,deck_cards)
+            else:
+                cards_player,deck_cards = pla_take_card(cards_player,deck_cards)
+                cards_robot,deck_cards = rob_take_card(cards_robot,deck_cards)
 
         if len(cards_robot) > 0 and len(cards_player) > 0:
-            see_cards(deck_cards_rand,cards_player,trump)
+            see_cards(deck_cards,cards_player,trump)
         elif len(cards_robot) == 0 and len(cards_player) == 0:
             winner = 'NO'
             break
@@ -67,6 +67,7 @@ while game_run == 'y':
             break
         elif len(cards_robot) == 0 and len(cards_player) > 0:
             winner = 'Me'
+            break
 
     if winner == 'Me':
         game_run = input("Я виграв! Граємо далі? 'y'/'n':")

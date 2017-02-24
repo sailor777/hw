@@ -13,25 +13,25 @@ deck_cards_weighted = [ 'C6','C7','C8','C9','CT','CJ','CQ','CK','CA',
 cardgame = []
 
 def shuffle_give_cards():
-    global cards_rob_ranks, deck_cards_rand
+    global cards_rob_ranks, deck_cards
     cards_robot = []
     cards_player = []
     trump=''
-    deck_cards_rand = [ 'C6','C7','C8','C9','CT','CJ','CQ','CK','CA',
+    deck_cards = [ 'C6','C7','C8','C9','CT','CJ','CQ','CK','CA',
                         'D6','D7','D8','D9','DT','DJ','DQ','DK','DA',
                         'H6','H7','H8','H9','HT','HJ','HQ','HK','HA',
                         'S6','S7','S8','S9','ST','SJ','SQ','SK','SA'
                         ]
     # shuffle deck ten times
     for i in range(10):
-        shuffle(deck_cards_rand)
+        shuffle(deck_cards)
 
     # distribute card
     for i in range(6):
-        cards_player.append(deck_cards_rand[-1])
-        deck_cards_rand.pop()
-        cards_robot.append(deck_cards_rand[-1])
-        deck_cards_rand.pop()
+        cards_player.append(deck_cards[-1])
+        deck_cards.pop()
+        cards_robot.append(deck_cards[-1])
+        deck_cards.pop()
     cards_player.sort()
     cards_robot.sort()
 
@@ -40,13 +40,13 @@ def shuffle_give_cards():
         cards_rob_ranks[card[1]] += 1
 
     # trump to table
-    trump = deck_cards_rand[randint(0,len(deck_cards_rand)-1)]
-    deck_cards_rand.remove(trump)
-    deck_cards_rand.insert(0,trump)
+    trump = deck_cards[randint(0,len(deck_cards)-1)]
+    deck_cards.remove(trump)
+    deck_cards.insert(0,trump)
 
-    return deck_cards_rand, cards_player, cards_robot, trump
+    return deck_cards, cards_player, cards_robot, trump
 
-def see_cards(deck_cards_rand,cards_player,trump):
+def see_cards(deck_cards,cards_player,trump):
     system('clear')
     print("{0} The Card Game: Sipmle Duren' {0}".format('='*30) )
     print(  '\t\tКарта вводиться 2-ма латинськими літерами, '
@@ -62,29 +62,29 @@ def see_cards(deck_cards_rand,cards_player,trump):
     print("Твої карти:", end=' ')
     for card in cards_player:
         print("{0} {1} ".format(draw_map_suit[card[0]],card[1]), end='')
-    if len(deck_cards_rand) > 0:
-        print("\nКарти на столі: %s " % len(deck_cards_rand[1:]), end='')
+    if len(deck_cards) > 0:
+        print("\nКарти на столі: %s " % len(deck_cards[1:]), end='')
         print("+ {0} {1} Козир".format(draw_map_suit[trump[0]],trump[1]))
     else:
         print("\nкозир:{0}".format(draw_map_suit[trump[0]]))
     print("{0} Карти в грі {0}".format('='*10) )
     return 0
 
-def pla_take_card(cards_player,deck_cards_rand):
+def pla_take_card(cards_player,deck_cards):
     while len(cards_player) < 6:
-        if len(deck_cards_rand) == 0: break
-        cards_player.append(deck_cards_rand[-1])
-        deck_cards_rand.pop()
-    return cards_player,deck_cards_rand
+        if len(deck_cards) == 0: break
+        cards_player.append(deck_cards[-1])
+        deck_cards.pop()
+    return cards_player,deck_cards
 
-def rob_take_card(cards_robot,deck_cards_rand):
+def rob_take_card(cards_robot,deck_cards):
     global cards_rob_ranks
     while len(cards_robot) < 6:
-        if len(deck_cards_rand) == 0: break
-        cards_robot.append(deck_cards_rand[-1])
+        if len(deck_cards) == 0: break
+        cards_robot.append(deck_cards[-1])
         cards_rob_ranks[cards_robot[-1][1]] += 1
-        deck_cards_rand.pop()
-    return cards_robot,deck_cards_rand
+        deck_cards.pop()
+    return cards_robot,deck_cards
 
 def trump_robot(cards_robot,trump):
     trump_robot = 'NO'
@@ -220,7 +220,7 @@ def player_attack(cards_player,trump):
     return cards_player
 
 def player_defence(cards_player,trump):
-    global cardgame, deck_cards_rand, card_ranks
+    global cardgame, deck_cards, card_ranks
     result = ''
     card = input("Бити>").upper()
     while card not in cards_player:
