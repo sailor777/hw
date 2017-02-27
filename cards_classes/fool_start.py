@@ -8,19 +8,22 @@ winner = ''
 player_name = ''
 game_run = 'y'
 #player_name = input("Введи своє ім'я:").capitalize()
+deck = []
 cards_player = []
 cards_robot = []
 
-deck_rand = Cards
+deck_game = Cards
 # shuffle deck
-deck_rand.shuffle_deck()
-#print("deck_game=%s" % deck_game)
+deck = deck_game.shuffle_deck(deck_game)
 for i in range(6):
-    cards_player = deck_rand.give_cards_pla()
-    print("cards_player=%s" % cards_player)
-    cards_robot = deck_rand.give_cards_rob()
-    print("cards_robot=%s" % cards_robot)
+    deck_game.give_cards_pla(deck_game)
+    deck_game.give_cards_rob(deck_game)
 
-#print("deck_game=%s" % deck_game)
-#print("cards_player=%s" % cards_player)
-#print("cards_robot=%s" % cards_robot)
+cards_player = deck_game.cards_player
+cards_robot = deck_game.cards_robot
+
+print("cards_player=%s" % cards_player)
+print("cards_robot=%s" % cards_robot)
+
+print("deck_lenght=%s" % len(deck_game.deck))
+print("deck_game=%s" % deck_game.deck)
