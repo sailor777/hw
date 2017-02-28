@@ -18,6 +18,7 @@ class Cards:
     draw_map_suit = {'C': '\u2667','D': '\u2666','H': '\u2665','S': '\u2664'}
     cards_robot = []
     cards_player = []
+    trump = ''
 
     def __init__(self):
         self.deck = deck
@@ -37,11 +38,11 @@ class Cards:
         self.deck.pop()
         return self.cards_player
 
-    def make_trump(self, deck):
-        self.trump = self.deck[randint(0,len(deck)-1)]
-        self.deck.remove(trump)
-        self.deck.insert(0,trump)
-        return self.trump, self.deck
+    def make_trump(self):
+        self.trump = self.deck[randint(0,len(self.deck)-1)]
+        self.deck.remove(self.trump)
+        self.deck.insert(0,self.trump)
+        return self.trump
 
 class Player:
     pass
