@@ -32,7 +32,7 @@ robot = Robot(deck,cards_robot,trump)
 player.see_cards(deck,cards_player,trump)
 
 # determine younger trump
-trump_pla = player.trump_player(cards_player,trump)
-trump_rob = robot.trump_robot(cards_robot,trump)
+trump_pla = player.see_trump(cards_player,trump)
+trump_rob = robot.see_trump(cards_robot,trump)
 
 print("trump_pla={} ; trump_rob={}".format(trump_pla,trump_rob))

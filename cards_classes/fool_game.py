@@ -8,11 +8,6 @@ class Cards:
             'H6','H7','H8','H9','HT','HJ','HQ','HK','HA',
             'S6','S7','S8','S9','ST','SJ','SQ','SK','SA'
             ]
-    deck_weight = [ 'C6','C7','C8','C9','CT','CJ','CQ','CK','CA',
-                    'D6','D7','D8','D9','DT','DJ','DQ','DK','DA',
-                    'H6','H7','H8','H9','HT','HJ','HQ','HK','HA',
-                    'S6','S7','S8','S9','ST','SJ','SQ','SK','SA'
-                    ]
     cards_player = []
     cards_robot = []
     trump = ''
@@ -52,9 +47,13 @@ class Cards:
         return self.trump
 
 class Player:
+    deck_weight = [ 'C6','C7','C8','C9','CT','CJ','CQ','CK','CA',
+                    'D6','D7','D8','D9','DT','DJ','DQ','DK','DA',
+                    'H6','H7','H8','H9','HT','HJ','HQ','HK','HA',
+                    'S6','S7','S8','S9','ST','SJ','SQ','SK','SA'
+                    ]
     draw_suit = {'C': '\u2667','D': '\u2666','H': '\u2665','S': '\u2664'}
     card_ranks = [ '6','7','8','9','T','J','Q','K','A' ]
-    cards_rob_ranks = {'6':0,'7':0,'8':0,'9':0,'T':0,'J':0,'Q':0,'K':0,'A':0}
     cardgame = []
 
     def __init__(self,deck,cards_player,trump):
@@ -86,7 +85,7 @@ class Player:
         print("{0} Карти в грі {0}".format('='*10) )
         return 0
 
-    def trump_player(self,cards_player,trump):
+    def see_trump(self,cards_player,trump):
         self.trump_pla = ''
         while self.trump_pla == '':
             self.trump_pla = input("Покажи молодший козир, "
@@ -107,7 +106,7 @@ class Player:
                     self.trump_pla = 'NO'
         return self.trump_pla
 
-    def player_attack(self,cardgame,cards_player,trump):
+    def attack(self,cardgame,cards_player,trump):
         self.cardgame = []
         card = input("Твій хід>").upper()
         while card not in self.cards_player:
@@ -117,7 +116,7 @@ class Player:
         print("{0} {1}".format(self.draw_suit[self.cardgame[0][0]],self.cardgame[0][1]))
         return self.cardgame,self.cards_player
 
-    def player_defence(self,deck,cardgame,cards_player,trump):
+    def defence(self,deck,cardgame,cards_player,trump):
         self.result = ''
         card = input("Бити>").upper()
         while card not in self.cards_player:
@@ -152,23 +151,15 @@ class Player:
             print("Щоб я скис! Ти забрав...")
         return self.result,self.cardgame,self.cards_player
 
-class Robot:
-    deck_weight = [ 'C6','C7','C8','C9','CT','CJ','CQ','CK','CA',
-                    'D6','D7','D8','D9','DT','DJ','DQ','DK','DA',
-                    'H6','H7','H8','H9','HT','HJ','HQ','HK','HA',
-                    'S6','S7','S8','S9','ST','SJ','SQ','SK','SA'
-                    ]
-    draw_suit = {'C': '\u2667','D': '\u2666','H': '\u2665','S': '\u2664'}
-    card_ranks = [ '6','7','8','9','T','J','Q','K','A' ]
+class Robot(Player):
     cards_rob_ranks = {'6':0,'7':0,'8':0,'9':0,'T':0,'J':0,'Q':0,'K':0,'A':0}
-    cardgame = []
 
     def __init__(self,deck,cards_robot,trump):
         self.deck = deck
         self.cards_robot = cards_robot
         self.trump = trump
 
-    def trump_robot(self,cards_robot,trump):
+    def see_trump(self,cards_robot,trump):
         self.trump_rob = 'NO'
         for card in self.cards_robot:
             if card[0] == self.trump[0]:
@@ -182,7 +173,7 @@ class Robot:
                     self.trump_rob = card
         return self.trump_rob
 
-    def robot_attack(self,cardgame,cards_robot,trump):
+    def attack(self,cardgame,cards_robot,trump):
         self.cardgame = []
         robot_att = []
         robot_att_trump = []
@@ -204,7 +195,7 @@ class Robot:
         print("Ходжу:{0} {1}".format(self.draw_suit[self.cardgame[0][0]],self.cardgame[0][1]))
         return self.cardgame,self.cards_robot
 
-    def robot_defence(self,cardgame,cards_robot,trump):
+    def defence(self,cardgame,cards_robot,trump):
         self.result = ''
         robot_def = []
         robot_def_trump = []
