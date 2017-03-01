@@ -3,24 +3,21 @@ from random import choice,randint,shuffle
 from os import system
 
 class Cards:
-    deck = ['C6','C7','C8','C9','CT','CJ','CQ','CK','CA',
-            'D6','D7','D8','D9','DT','DJ','DQ','DK','DA',
-            'H6','H7','H8','H9','HT','HJ','HQ','HK','HA',
-            'S6','S7','S8','S9','ST','SJ','SQ','SK','SA'
-            ]
-    cards_player = []
-    cards_robot = []
+
     trump = ''
 
-    def __init__(self):
-        self.deck = deck
-
     def shuffle_deck(self):
+        self.deck =['C6','C7','C8','C9','CT','CJ','CQ','CK','CA',
+                    'D6','D7','D8','D9','DT','DJ','DQ','DK','DA',
+                    'H6','H7','H8','H9','HT','HJ','HQ','HK','HA',
+                    'S6','S7','S8','S9','ST','SJ','SQ','SK','SA'
+                    ]
         for i in range(10):
             shuffle(self.deck)
         return self.deck
 
     def give_cards(self):
+        self.cards_player = self.cards_robot = []
         for i in range(6):
             self.cards_robot.append(self.deck[-1])
             self.deck.pop()
@@ -28,17 +25,17 @@ class Cards:
             self.deck.pop()
         return self.cards_player,self.cards_robot
 
-    def give_cards_pla(self,deck,cards_player):
-        if len(cards) < 6:
+    def give_cards_pla(self,cards_player,deck):
+        if len(self.cards_player) < 6:
             self.cards_player.append(self.deck[-1])
             self.deck.pop()
         return self.cards_player,self.deck
 
-    def give_cards_rob(self,deck,cards_robot):
-        if len(cards) < 6:
+    def give_cards_rob(self,cards_robot,deck):
+        if len(self.cards_robot) < 6:
             self.cards_robot.append(self.deck[-1])
             self.deck.pop()
-        return self.cards_robot
+        return self.cards_robot,self.deck
 
     def make_trump(self):
         self.trump = self.deck[randint(0,len(self.deck)-1)]
@@ -54,7 +51,6 @@ class Player:
                     ]
     draw_suit = {'C': '\u2667','D': '\u2666','H': '\u2665','S': '\u2664'}
     card_ranks = [ '6','7','8','9','T','J','Q','K','A' ]
-    cardgame = []
 
     def __init__(self,deck,cards_player,trump):
         self.deck = deck
@@ -106,17 +102,17 @@ class Player:
                     self.trump_pla = 'NO'
         return self.trump_pla
 
-    def attack(self,cardgame,cards_player,trump):
-        self.cardgame = []
+    def attack(self,cards_player,trump):
+        cardgame = []
         card = input("Твій хід>").upper()
         while card not in self.cards_player:
             card = input("В тебе немає цеї карти, введи карту:").upper()
-        self.cardgame.append(card)
+        cardgame.append(card)
         self.cards_player.remove(card)
-        print("{0} {1}".format(self.draw_suit[self.cardgame[0][0]],self.cardgame[0][1]))
-        return self.cardgame,self.cards_player
+        print("{0} {1}".format(self.draw_suit[cardgame[0][0]],cardgame[0][1]))
+        return cardgame,self.cards_player
 
-    def defence(self,deck,cardgame,cards_player,trump):
+    def defence(self,cardgame,cards_player,trump):
         self.result = ''
         card = input("Бити>").upper()
         while card not in self.cards_player:
@@ -128,12 +124,13 @@ class Player:
             else:
                 card = input("В тебе немає цеї карти, карту або 'take':").upper()
         if self.result != 'take':
-            self.cardgame.append(card)
-            if self.card_ranks.index(cardgame[1][1]) > self.card_ranks.index(cardgame[0][1])\
-                and self.cardgame[1][0] == self.cardgame[0][0]:
+            cardgame.append(card)
+            if self.card_ranks.index(cardgame[1][1]) > \
+                self.card_ranks.index(cardgame[0][1]) \
+                and cardgame[1][0] == cardgame[0][0]:
                 self.result = 'beat'
-            elif self.cardgame[1][0] == self.trump[0] \
-                and self.cardgame[0][0] != self.trump[0]:
+            elif cardgame[1][0] == self.trump[0] \
+                and cardgame[0][0] != self.trump[0]:
                 self.result = 'beat_trump'
             else:
                 self.cards_player.remove(card)
@@ -141,23 +138,28 @@ class Player:
         if self.result == 'beat':
             self.cards_player.remove(card)
             print("{0} {1} Бито!" \
-            .format(self.draw_suit[self.cardgame[1][0]],self.cardgame[1][1]))
+            .format(self.draw_suit[cardgame[1][0]],cardgame[1][1]))
         elif self.result == 'beat_trump':
             self.cards_player.remove(card)
             print("{0} {1} Козир!!!" \
-            .format(self.draw_suit[self.cardgame[1][0]],self.cardgame[1][1]))
+            .format(self.draw_suit[cardgame[1][0]],cardgame[1][1]))
         else:
             self.cards_player.extend(cardgame)
             print("Щоб я скис! Ти забрав...")
-        return self.result,self.cardgame,self.cards_player
+        return self.result,self.cards_player
 
 class Robot(Player):
-    cards_rob_ranks = {'6':0,'7':0,'8':0,'9':0,'T':0,'J':0,'Q':0,'K':0,'A':0}
 
     def __init__(self,deck,cards_robot,trump):
         self.deck = deck
         self.cards_robot = cards_robot
         self.trump = trump
+
+    def eval_rob_ranks(self,cards_robot):
+        cardsrobranks = {'6':0,'7':0,'8':0,'9':0,'T':0,'J':0,'Q':0,'K':0,'A':0}
+        for card in self.cards_robot:
+            cardsrobranks[card[1]] += 1
+        return cardsrobranks
 
     def see_trump(self,cards_robot,trump):
         self.trump_rob = 'NO'
@@ -173,64 +175,66 @@ class Robot(Player):
                     self.trump_rob = card
         return self.trump_rob
 
-    def attack(self,cardgame,cards_robot,trump):
-        self.cardgame = []
+    def attack(self,cards_robot,trump):
+        cardsrobranks = self.eval_rob_ranks(self.cards_robot)
+        cardgame = []
         robot_att = []
         robot_att_trump = []
         for rank in self.card_ranks:
-            if self.cards_rob_ranks[rank] > 0:
+            if cardsrobranks[rank] > 0:
                 for card in self.cards_robot:
                     if card[1] == rank and card[0] != self.trump[0]:
                         robot_att.append(card)
                     else:
                         robot_att_trump.append(card)
         if len(robot_att) != 0:
-            self.cardgame.append(robot_att[0])
+            cardgame.append(robot_att[0])
             self.cards_robot.remove(robot_att[0])
-            self.cards_rob_ranks[robot_att[0][1]] -= 1
+            cardsrobranks[robot_att[0][1]] -= 1
         else:
-            self.cardgame.append(robot_att_trump[0])
+            cardgame.append(robot_att_trump[0])
             self.cards_robot.remove(robot_att_trump[0])
-            self.cards_rob_ranks[robot_att_trump[0][1]] -= 1
-        print("Ходжу:{0} {1}".format(self.draw_suit[self.cardgame[0][0]],self.cardgame[0][1]))
-        return self.cardgame,self.cards_robot
+            cardsrobranks[robot_att_trump[0][1]] -= 1
+        print("Ходжу:{0} {1}".format(self.draw_suit[cardgame[0][0]],cardgame[0][1]))
+        return cardgame,self.cards_robot
 
     def defence(self,cardgame,cards_robot,trump):
+        cardsrobranks = self.eval_rob_ranks(self.cards_robot)
         self.result = ''
         robot_def = []
         robot_def_trump = []
         # find the variance for defence
         for card in self.cards_robot:
             if self.card_ranks.index(card[1]) > self.card_ranks.index(cardgame[0][1]) \
-                and card[0] == self.cardgame[0][0]:
+                and card[0] == cardgame[0][0]:
                 robot_def.append(card)
-            elif self.cardgame[0][0] != self.trump[0] and card[0] == self.trump[0] :
+            elif cardgame[0][0] != self.trump[0] and card[0] == self.trump[0] :
                 robot_def_trump.append(card)
         robot_def.sort()
         robot_def_trump.sort()
         if len(robot_def) != 0:
-            self.cardgame.append(robot_def[0])
+            cardgame.append(robot_def[0])
             self.result = 'beat'
         elif len(robot_def_trump) != 0:
-            self.cardgame.append(robot_def_trump[0])
+            cardgame.append(robot_def_trump[0])
             self.result = 'beat_trump'
         else:
             self.result = 'take'
 
         if self.result == 'beat':
-            self.cards_robot.remove(self.cardgame[1])
-            self.cards_rob_ranks[self.cardgame[1][1]] -= 1
+            self.cards_robot.remove(cardgame[1])
+            cardsrobranks[cardgame[1][1]] -= 1
             print("{0} {1} Бито!"\
-            .format(self.draw_suit[cardgame[1][0]],self.cardgame[1][1]))
+            .format(self.draw_suit[cardgame[1][0]],cardgame[1][1]))
         elif self.result == 'beat_trump':
             self.cards_robot.remove(cardgame[1])
-            self.cards_rob_ranks[cardgame[1][1]] -= 1
+            cardsrobranks[cardgame[1][1]] -= 1
             print("{0} {1} Б'ю Козирем!"\
             .format(self.draw_suit[cardgame[1][0]],cardgame[1][1]))
         else:
             self.cards_robot.extend(cardgame)
-            self.cards_rob_ranks[cardgame[0][1]] += 1
-        return self.result,self.cardgame,self.cards_robot
+            cardsrobranks[cardgame[0][1]] += 1
+        return self.result,self.cards_robot
 
 class Game:
     deck_weight = [ 'C6','C7','C8','C9','CT','CJ','CQ','CK','CA',
@@ -239,19 +243,15 @@ class Game:
                     'S6','S7','S8','S9','ST','SJ','SQ','SK','SA'
                     ]
     draw_suit = {'C': '\u2667','D': '\u2666','H': '\u2665','S': '\u2664'}
-    card_ranks = [ '6','7','8','9','T','J','Q','K','A' ]
-    cards_rob_ranks = {'6':0,'7':0,'8':0,'9':0,'T':0,'J':0,'Q':0,'K':0,'A':0}
-    cardgame = []
 
-    def __init__(self,deck,cards_player,cards_robot,trump):
-        self.deck = deck
-        self.cards_player = cards_player
-        self.cards_robot = cards_robot
+    def __init__(self,trump_pla,trump_rob,trump):
+        self.trump_pla = trump_pla
+        self.trump_rob = trump_rob
         self.trump = trump
 
     def trumping(self,trump_pla,trump_rob,trump):
-        self.step_robot = False
         self.step_player = False
+        self.step_robot = False
 
         if self.trump_rob == 'NO' and self.trump_pla == 'NO':
             print("Козирів немає,даю тобі фору, ходи:", end='')
@@ -265,8 +265,8 @@ class Game:
             .format(self.draw_suit[self.trump[0]],self.trump_pla[1]))
             self.step_player = True
         else:
-            if deck_weight.index(self.trump_rob) \
-            < deck_weight.index(self.trump_pla):
+            if self.deck_weight.index(self.trump_rob) \
+                < self.deck_weight.index(self.trump_pla):
                 print("Мій козир {0} {1} молодший, я ходжу! "\
                 .format(self.draw_suit[self.trump[0]],self.trump_rob[1]))
                 self.step_robot = True
