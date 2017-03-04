@@ -15,7 +15,7 @@ while not player_name.isalpha():
         print("Привіт, %s =)" % player_name)
         break
     if i == 2:
-        print("OK!Дістав, привіт %s =)" % player_name)
+        print("OK!Нехай, привіт %s =)" % player_name)
         break
     i += 1
 
@@ -31,8 +31,6 @@ while game_run == 'y':
     trump = deck_game.make_trump()
     # distribute cards for play's and take cards from table
     cards_player, cards_robot = deck_game.give_cards()
-    cards_player.sort()
-    cards_robot.sort()
     # define players
     player = Player(deck,cards_player,trump)
     robot = Robot(deck,cards_robot,trump)
@@ -68,11 +66,11 @@ while game_run == 'y':
 
         if len(deck) > 0:
             if step_player:
-                cards_robot,deck = deck_game.give_cards_rob(cards_robot,deck)
-                cards_player,deck = deck_game.give_cards_pla(cards_player,deck)
+                cards_robot,deck = deck_game.take_card(cards_robot,deck)
+                cards_player,deck = deck_game.take_card(cards_player,deck)
             else:
-                cards_player,deck = deck_game.give_cards_pla(cards_player,deck)
-                cards_robot,deck = deck_game.give_cards_rob(cards_robot,deck)
+                cards_player,deck = deck_game.take_card(cards_player,deck)
+                cards_robot,deck = deck_game.take_card(cards_robot,deck)
             cards_robot.sort()
             cards_player.sort()
 

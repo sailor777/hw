@@ -24,19 +24,15 @@ class Cards:
             self.deck.pop()
             self.cards_player.append(self.deck[-1])
             self.deck.pop()
+        self.cards_player.sort()
+        self.cards_robot.sort()
         return self.cards_player,self.cards_robot
 
-    def give_cards_pla(self,cards_player,deck):
-        if len(self.cards_player) < 6:
-            self.cards_player.append(self.deck[-1])
+    def take_card(self,cards,deck):
+        if len(cards) < 6:
+            cards.append(self.deck[-1])
             self.deck.pop()
-        return self.cards_player,self.deck
-
-    def give_cards_rob(self,cards_robot,deck):
-        if len(self.cards_robot) < 6:
-            self.cards_robot.append(self.deck[-1])
-            self.deck.pop()
-        return self.cards_robot,self.deck
+        return cards,self.deck
 
     def make_trump(self):
         self.trump = self.deck[randint(0,len(self.deck)-1)]
