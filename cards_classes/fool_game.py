@@ -17,7 +17,8 @@ class Cards:
         return self.deck
 
     def give_cards(self):
-        self.cards_player = self.cards_robot = []
+        self.cards_player = []
+        self.cards_robot = []
         for i in range(6):
             self.cards_robot.append(self.deck[-1])
             self.deck.pop()
