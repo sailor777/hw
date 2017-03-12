@@ -1,5 +1,6 @@
 from time import time
 from os import system
+import itertools
 
 sumb = 0
 result = []
