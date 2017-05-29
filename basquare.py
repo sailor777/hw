@@ -24,10 +24,10 @@ print(make_flat(a))
 
 # task_4
 class Dlist(list):
-    """ division elements """
 
     def __truediv__(self, value):
-        return [item / value for item in self]
+    	""" division elements """
+        return Dlist([item / value for item in self])
 
 # task_5
 with open('db_sites.txt') as f:
@@ -41,6 +41,4 @@ print(count_lines)
 from os import system
 
 
-system('grep -c . db_sites.txt')
 system('grep -c ^ db_sites.txt')
-system('grep -c $ db_sites.txt')
