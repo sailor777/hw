@@ -41,4 +41,4 @@ print(count_lines)
 from os import system
 
 
-system('grep -c ^ db_sites.txt')
+system('wc -l db_sites.txt')
