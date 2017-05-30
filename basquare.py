@@ -15,7 +15,10 @@ def make_flat(args):
     flat_list = []
     for item in args:
         if isinstance(item, list):
-            [flat_list.append(i) for i in item]
+            if isinstance(item, list):
+                flat_list += make_flat(item)
+            else:
+                [flat_list.append(i) for i in item]
         else:
             flat_list.append(item)
     return flat_list
@@ -26,8 +29,8 @@ print(make_flat(a))
 class Dlist(list):
 
     def __truediv__(self, value):
-    	""" division elements """
-        return Dlist([item / value for item in self])
+        """ division elements """
+        return Dlist[item / value for item in self]
 
 # task_5
 with open('db_sites.txt') as f:
@@ -39,6 +42,5 @@ print(count_lines)
 
 # task_6 for bash
 from os import system
-
 
 system('wc -l db_sites.txt')
